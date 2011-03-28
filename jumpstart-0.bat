@@ -22,10 +22,10 @@ call setupenv.bat
 
 REM ====================== Cleanup Current Files ======================
 
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %USERNAME% -p %MYPASS% stop "[RAC11g] collabn1\collabn1.vmx" hard
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %USERNAME% -p %MYPASS% unregister "[RAC11g] collabn1\collabn1.vmx"
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %USERNAME% -p %MYPASS% stop "[RAC11g] collabn2\collabn1.vmx" hard
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %USERNAME% -p %MYPASS% unregister "[RAC11g] collabn2\collabn1.vmx"
+call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% stop "[RAC11g] collabn1\collabn1.vmx" hard
+call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% unregister "[RAC11g] collabn1\collabn1.vmx"
+call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% stop "[RAC11g] collabn2\collabn1.vmx" hard
+call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% unregister "[RAC11g] collabn2\collabn1.vmx"
 
 mkdir %DESTDRIVE%\%DESTDIR%
 mkdir %DESTDRIVE%\%DESTDIR%\collabn1

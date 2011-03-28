@@ -26,6 +26,7 @@ set DESTDIR=RAC11g
 set DESTDRIVESHARED=C:
 set DESTDIRSHARED=RAC11g-shared
 
+set MYUSER=%USERNAME%
 set MYPASS=%YOUR_WINDOWS_PASSWORD%
 
 set VMRUNBIN="C:\program files\vmware\vmware server\vmrun"

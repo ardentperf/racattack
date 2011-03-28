@@ -23,10 +23,10 @@ call setupenv.bat
 REM ====================== Cleanup Current Files ======================
 time /t
 
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %USERNAME% -p %MYPASS% stop "[RAC11g] collabn1\collabn1.vmx" hard
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %USERNAME% -p %MYPASS% unregister "[RAC11g] collabn1\collabn1.vmx"
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %USERNAME% -p %MYPASS% stop "[RAC11g] collabn2\collabn1.vmx" hard
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %USERNAME% -p %MYPASS% unregister "[RAC11g] collabn2\collabn1.vmx"
+call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% stop "[RAC11g] collabn1\collabn1.vmx" hard
+call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% unregister "[RAC11g] collabn1\collabn1.vmx"
+call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% stop "[RAC11g] collabn2\collabn1.vmx" hard
+call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% unregister "[RAC11g] collabn2\collabn1.vmx"
 time /t
 
 mkdir %DESTDRIVE%\%DESTDIR%
@@ -78,8 +78,8 @@ rem *** Windows TYPE command is fastest but can't handle >4GB files
 %LZOPBIN% -vdNp %SOURCEDRIVE%\%SOURCEDIR%\shared.lzo
 time /t
 
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %USERNAME% -p %MYPASS% register "[RAC11g] collabn1\collabn1.vmx"
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %USERNAME% -p %MYPASS% register "[RAC11g] collabn2\collabn1.vmx"
+call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% register "[RAC11g] collabn1\collabn1.vmx"
+call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% register "[RAC11g] collabn2\collabn1.vmx"
 
 REM ====================== Check New Files ======================
 time /t
