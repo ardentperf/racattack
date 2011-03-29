@@ -30,6 +30,13 @@ call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% 
 call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% unregister "[RAC11g] collabn2\collabn1.vmx"
 time /t
 
+mkdir %DESTDRIVE%\%DESTDIR%
+mkdir %DESTDRIVE%\%DESTDIR%\collabn1
+mkdir %DESTDRIVE%\%DESTDIR%\collabn2
+
+mkdir %DESTDRIVESHARED%\%DESTDIRSHARED%
+
+
 %DESTDRIVE%
 cd \%DESTDIR%\collabn1
 del /q vmware*.log
