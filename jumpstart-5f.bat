@@ -18,5 +18,5 @@ REM along with RAC-ATTACK. If not, see <http://www.gnu.org/licenses/>.
 REM
 REM
 
-set SOURCEDIR=RAC-3-clusterware
-call dobuild.bat
+set SOURCEDIR=RAC-5f-db
+call dojump.bat

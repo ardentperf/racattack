@@ -18,5 +18,5 @@ REM along with RAC-ATTACK. If not, see <http://www.gnu.org/licenses/>.
 REM
 REM
 
-set SOURCEDIR=RAC-5a-db
+set SOURCEDIR=RAC-4f-db-inst
 call dojump.bat

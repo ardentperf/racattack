@@ -18,5 +18,5 @@ REM along with RAC-ATTACK. If not, see <http://www.gnu.org/licenses/>.
 REM
 REM
 
-set SOURCEDIR=RAC-4-database
-call dojump.bat
+set SOURCEDIR=RAC-6f-patch
+call dobuild.bat
