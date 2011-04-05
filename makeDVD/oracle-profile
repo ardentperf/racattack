@@ -1,0 +1,23 @@
+export ORACLE_BASE=/u01/app/oracle
+export ADMIN_TOP=$ORACLE_BASE/admin
+export ORACLE_SID=RAC1
+ORAENV_ASK=NO
+grep -q "^$ORACLE_SID" /etc/oratab && . oraenv
+unset ORAENV_ASK
+if [ $USER = "oracle" ]; then
+  if [ $SHELL = "/bin/ksh" ]; then
+    ulimit -p 16384
+    ulimit -n 65536
+  else
+    ulimit -u 16384 -n 65536
+  fi
+fi
+export PATH=$PATH:/usr/sbin
+alias s=sqlplus
+alias ss="sqlplus '/ as sysdba'"
+alias cdoh='cd $ORACLE_HOME'
+alias cda='cd $ADMIN_TOP; cd ./$ORACLE_SID 2>/dev/null||cd ./${ORACLE_SID/%?}'
+alias cdd='cd $ORACLE_BASE/diag'
+alias oenv='echo "SIDs here are: $(egrep -v "(^#|^$)" /etc/oratab|awk -F: '\''{printf$1" "}'\'')"; . oraenv'
+echo "Set environment by typing 'oenv' - default is instance $ORACLE_SID."
+PS1='\h:$PWD[$ORACLE_SID]\$ '
