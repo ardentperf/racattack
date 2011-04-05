@@ -20,6 +20,7 @@ REM
 
 call setupenv.bat
 
+echo "SOURCEDIR: %SOURCEDIR%"
 echo "CAUTION: THIS WILL DELETE THE CURRENT IMAGES. ARE YOU SURE?  (CTRL-C to ABORT)"
 pause
 time /t
