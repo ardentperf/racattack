@@ -46,18 +46,6 @@ print "ignorenonsense=nothing\n";
 EOF
 }
 
-function getSubmitURL {
-perl <<EOF
-use HTML::Parser ();
-sub handle_start {
-  return if shift ne "form"; my \$attr=shift; 
-  print \$attr->{action}."\n";
-}
-my \$p=HTML::Parser->new(api_version=>3,start_h=>[\&handle_start,"tagname,attr"]);
-\$p->parse_file("$1") || die \$!;
-EOF
-}
-
 
 mkdir -p $1
 
@@ -76,11 +64,6 @@ for URL in "${URLS[@]}"; do
   FILE="$(basename $URL)"
   if [ ! -f /tmp/$FILE ]; then
     curl --location-trusted -b /tmp/cookies -c /tmp/cookies -A "Mozilla/5.0" -o /tmp/$FILE "$URL"
-    if [ -n "$(find /tmp/$FILE -size -5k)" ]; then
-      getFormFields /tmp/$FILE >/tmp/formx
-      NEXT=$(getSubmitURL /tmp/$FILE)
-      curl -d @/tmp/formx --location-trusted -b /tmp/cookies -c /tmp/cookies -A "Mozilla/5.0" -o /tmp/$FILE "$NEXT"
-    fi
   fi
   if [ $(echo $FILE|awk -F. '{print$NF}') == zip ]; then
     unzip /tmp/$FILE
