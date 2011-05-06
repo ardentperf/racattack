@@ -53,10 +53,15 @@ cd $(dirname $0)
 cp oracle-profile $1/
 tar cvf $1/fix_cssd.tar root
 
+read -p "Oracle SSO Username: " ORACLE_USERNAME
+stty -echo
+read -p "Oracle SSO Password: " ORACLE_PASSWORD; echo
+stty +echo
+
 # login to oracle website first
 curl --location-trusted -c /tmp/cookies -A "Mozilla/5.0" http://www.oracle.com/webapps/redirect/signon >/tmp/formfields
 getFormFields /tmp/formfields >/tmp/formx
-curl -vd @/tmp/formx -d ssousername=jeremy.schneider@ardentperf.com -d password=0racle --location-trusted -b /tmp/cookies -c /tmp/cookies -A "Mozilla/5.0" https://login.oracle.com/oam/server/sso/auth_cred_submit >/tmp/form_login_debug 2>&1
+curl -vd @/tmp/formx -d ssousername="$ORACLE_USERNAME" -d password="$ORACLE_PASSWORD" --location-trusted -b /tmp/cookies -c /tmp/cookies -A "Mozilla/5.0" https://login.oracle.com/oam/server/sso/auth_cred_submit >/tmp/form_login_debug 2>&1
 
 # download files from list
 cd $1
