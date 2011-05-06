@@ -56,7 +56,7 @@ tar cvf $1/fix_cssd.tar root
 read -p "Oracle SSO Username: " ORACLE_USERNAME
 stty -echo
 read -p "Oracle SSO Password: " ORACLE_PASSWORD; echo
-stty +echo
+stty echo
 
 # login to oracle website first
 curl --location-trusted -c /tmp/cookies -A "Mozilla/5.0" http://www.oracle.com/webapps/redirect/signon >/tmp/formfields
