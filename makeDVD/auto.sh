@@ -85,3 +85,5 @@ if [ ! -n "$DEBUG" ]; then
   rm -v /tmp/form_login_debug
 fi
 
+echo "FINISHED BUILDING RAC ATTACK DVD"
+
