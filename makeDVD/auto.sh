@@ -19,16 +19,15 @@
 #
 #
 
-[ -n "$DEBUG" ] && set -x
-
-[ -z "$1" ] && { echo "Usage: auto.sh <dest-path>" && exit 1; }
-
-URLS=(
+DOWNLOADS=(
     'http://download.oracle.com/otn_software/asmlib/oracleasmlib-2.0.4-1.el5.i386.rpm'
     'http://download.oracle.com/otn/linux/oracle11g/R2/linux_11gR2_database_1of2.zip'
     'http://download.oracle.com/otn/linux/oracle11g/R2/linux_11gR2_database_2of2.zip'
     'http://download.oracle.com/otn/linux/oracle11g/R2/linux_11gR2_grid.zip'
 )
+
+[ -n "$DEBUG" ] && set -x
+[ -z "$1" ] && { echo "Usage: auto.sh <dest-path>" && exit 1; }
 
 function getFormFields {
 perl <<EOF
@@ -65,7 +64,7 @@ curl -vd @/tmp/formx -d ssousername="$ORACLE_USERNAME" -d password="$ORACLE_PASS
 
 # download files from list
 cd $1
-for URL in "${URLS[@]}"; do
+for URL in "${DOWNLOADS[@]}"; do
   FILE="$(basename $URL)"
   echo "DOWNLOADING: /tmp/$FILE"
   if [ ! -f /tmp/$FILE ]; then
