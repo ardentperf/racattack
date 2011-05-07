@@ -48,7 +48,7 @@ EOF
 mkdir -p $1
 
 cd $(dirname $0)
-cp oracle-profile $1/
+cp -v oracle-profile $1/
 tar cvf $1/fix_cssd.tar root
 
 read -p "Oracle SSO Username: " ORACLE_USERNAME
