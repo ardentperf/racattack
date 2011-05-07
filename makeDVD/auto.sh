@@ -73,16 +73,16 @@ for URL in "${URLS[@]}"; do
   fi
   if [ $(echo $FILE|awk -F. '{print$NF}') == zip ]; then
     unzip /tmp/$FILE
-    rm /tmp/$FILE
+    rm -v /tmp/$FILE
   else
     mv -v /tmp/$FILE .
   fi
 done
 
 if [ ! -n "$DEBUG" ]; then
-  rm /tmp/cookies
-  rm /tmp/formx
-  rm /tmp/formfields
-  rm /tmp/form_login_debug
+  rm -v /tmp/cookies
+  rm -v /tmp/formx
+  rm -v /tmp/formfields
+  rm -v /tmp/form_login_debug
 fi
 
