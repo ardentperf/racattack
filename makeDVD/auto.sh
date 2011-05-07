@@ -22,7 +22,6 @@
 [ -n "$DEBUG" ] && set -x
 
 [ -z "$1" ] && { echo "Usage: auto.sh <dest-path>" && exit 1; }
-[ $(id -u) -ne 0 ] && { echo "ERROR: must run as root user" && exit 1; }
 
 URLS=(
     'http://download.oracle.com/otn_software/asmlib/oracleasmlib-2.0.4-1.el5.i386.rpm'
@@ -61,12 +60,13 @@ stty echo
 # login to oracle website first
 curl --location-trusted -c /tmp/cookies -A "Mozilla/5.0" http://www.oracle.com/webapps/redirect/signon >/tmp/formfields
 getFormFields /tmp/formfields >/tmp/formx
-curl -vd @/tmp/formx -d ssousername="$ORACLE_USERNAME" -d password="$ORACLE_PASSWORD" --location-trusted -b /tmp/cookies -c /tmp/cookies -A "Mozilla/5.0" https://login.oracle.com/oam/server/sso/auth_cred_submit >/tmp/form_login_debug 2>&1
+curl -vd @/tmp/formx -d ssousername="$ORACLE_USERNAME" -d password="$ORACLE_PASSWORD" --location-trusted -b /tmp/cookies -c /tmp/cookies -A "Mozilla/5.0" https://login.oracle.com/oam/server/sso/auth_cred_submit >$(dirname $0)/form_login_debug 2>&1
 
 # download files from list
 cd $1
 for URL in "${URLS[@]}"; do
   FILE="$(basename $URL)"
+  echo "DOWNLOAD: /tmp/$FILE"
   if [ ! -f /tmp/$FILE ]; then
     curl --location-trusted -b /tmp/cookies -c /tmp/cookies -A "Mozilla/5.0" -o /tmp/$FILE "$URL"
   fi
@@ -77,4 +77,8 @@ for URL in "${URLS[@]}"; do
     mv -v /tmp/$FILE .
   fi
 done
+
+rm /tmp/cookies
+rm /tmp/formx
+rm /tmp/formfields
 
