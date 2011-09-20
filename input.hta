@@ -1,0 +1,52 @@
+    <html>
+    <head>
+    <title>RAC Attack - Jumpstart Configuration</title>
+    <hta:application>
+    <script language="vbscript">
+        window.resizeTo 700,300
+        Sub SaveBatch()
+            Set fs = CreateObject("Scripting.FileSystemObject")
+            strFile = fs.GetAbsolutePathName(fs.BuildPath(fs.GetSpecialFolder(2), "UserIn.bat"))
+            Set ts = fs.OpenTextFile(strFile, 2, True)
+            ts.WriteLine "SET SOURCEDRIVE=" & document.Forms(0).elements("sourcedrive").value
+            ts.WriteLine "SET DESTDRIVE=" & document.Forms(0).elements("destdrive").value
+            ts.WriteLine "SET DESTDRIVESHARED=" & document.Forms(0).elements("destdriveshared").value
+            ts.WriteLine 'SET VMWAREDIR="' & document.Forms(0).elements("vmwaredir").value & '"'
+            ts.WriteLine "SET MYUSER=" & document.Forms(0).elements("username").value
+            ts.WriteLine "SET MYPASS=" & document.Forms(0).elements("password").value
+            ts.Close
+        End Sub
+    </script>
+    </head>
+    <body>
+    <form>
+        <table>
+        <tr><td align="right">Jumpstart Source Drive</td>
+        <td><input type=text tabindex=1 name=sourcedrive size=5 value="DEFAULT-SOURCEDRIVE"></td></tr>
+
+        <tr><td align="right">[RAC11g] Datastore Dest Drive</td>
+        <td><input type=text name=destdrive size=5 value="DEFAULT-DESTDRIVE"> <font color="red">50G Required</font></td></tr>
+
+        <tr><td align="right">[RAC11g-shared] / [RAC11g-iso] Datastore Dest Drive</td>
+        <td><input type=text name=destdriveshared size=5 value="DEFAULT-DESTDRIVESHARED"> <font color="red">15G Required</font></td></tr>
+
+        <tr><td align="right">VMware Installation Directory</td>
+        <td><input type=text name=vmwaredir size=45 value=DEFAULT-VMWAREDIR></td></tr>
+
+        <tr><td align="right">Admin User</td>
+        <td><input type=text name=username size=20 value="DEFAULT-MYUSER"></td></tr>
+
+        <tr><td align="right">Login Password</td>
+        <td><input type=password name=password size=20 value="DEFAULT-MYPASS"></td></tr>
+
+        <tr><td></td>
+        <td><input type=button language="vbscript" value="CONTINUE" onclick="SaveBatch : Window.Close"></td></tr>
+        </table>
+
+        <br>
+    </form>
+    <script language=vbscript>
+        document.Forms(0).elements("username").focus
+    </script>
+    </body>
+    </html>
