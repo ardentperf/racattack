@@ -25,9 +25,10 @@ Instructions:
 3. Create shortcuts on the workstation desktop to each of the jumpstart-* scripts
 
 
-NOTE: LZOP and MD5SUM are both GPL products
+NOTE: LZOP, MD5SUM and SED are GPL products
 --> I obtained this copy of LZOP from http://www.lzop.org
 --> I obtained this copy of MD5SUM from http://www.etree.org/md5com.html
+--> I obtained this copy of SED from http://gnuwin32.sourceforge.net
 
 
 jeremy.schneider@ardentperf.com
