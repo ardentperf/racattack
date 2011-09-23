@@ -42,6 +42,7 @@ mkdir %DESTDRIVESHARED%\%DESTDIRSHARED%
 cd \%DESTDIR%\collabn1
 del /q vmware*.log
 del /q collabn1.vmx.orig
+move /Y collabn1.vmx collabn1.vmx.orig
 %MD5BIN% * >checksum.md5
 
 type checksum.md5 | find /V "checksum" > c2.md5
@@ -51,6 +52,7 @@ time /t
 cd \%DESTDIR%\collabn2
 del /q vmware*.log
 del /q collabn1.vmx.orig
+move /Y collabn1.vmx collabn1.vmx.orig
 %MD5BIN% * >checksum.md5
 
 type checksum.md5 | find /V "checksum" > c2.md5
@@ -83,6 +85,11 @@ time /t
 %LZOPBIN% -FPvo shared.lzo %DESTDRIVESHARED%\%DESTDIRSHARED%\*
 time /t
 
+%DESTDRIVE%
+cd \%DESTDIR%\collabn1
+move /Y collabn1.vmx.orig collabn1.vmx
+cd \%DESTDIR%\collabn2
+move /Y collabn1.vmx.orig collabn1.vmx
 
 call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% register "[RAC11g] collabn1\collabn1.vmx"
 call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% register "[RAC11g] collabn2\collabn1.vmx"

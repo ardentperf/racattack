@@ -65,8 +65,7 @@ cd \%DESTDIR%\collabn1
 rem type %SOURCEDRIVE%\%SOURCEDIR%\collabn1.lzo | %LZOPBIN% -vdNp
 rem *** Windows TYPE command is fastest but can't handle >4GB files
 %LZOPBIN% -vdNp %SOURCEDRIVE%\%SOURCEDIR%\collabn1.lzo
-if exist collabn1.vmx (
-  move collabn1.vmx collabn1.vmx.orig
+if exist collabn1.vmx.orig (
   %SEDBIN% -f %TEMP%\fixup.sed collabn1.vmx.orig >collabn1.vmx
 )
 time /t
@@ -75,8 +74,7 @@ cd \%DESTDIR%\collabn2
 rem type %SOURCEDRIVE%\%SOURCEDIR%\collabn2.lzo | %LZOPBIN% -vdNp
 rem *** Windows TYPE command is fastest but can't handle >4GB files
 %LZOPBIN% -vdNp %SOURCEDRIVE%\%SOURCEDIR%\collabn2.lzo
-if exist collabn1.vmx (
-  move collabn1.vmx collabn1.vmx.orig
+if exist collabn1.vmx.orig (
   %SEDBIN% -f %TEMP%\fixup.sed collabn1.vmx.orig >collabn1.vmx
 )
 time /t
