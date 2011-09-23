@@ -18,6 +18,7 @@ REM along with RAC-ATTACK. If not, see <http://www.gnu.org/licenses/>.
 REM
 REM
 
+set SOURCEDIR=RAC-0-delete
 call setupenv.bat
 
 REM ====================== Cleanup Current Files ======================
@@ -36,17 +37,26 @@ mkdir %DESTDRIVE%\%DESTDIR%.prev\collabn2
 mkdir %DESTDRIVESHARED%\%DESTDIRSHARED%
 mkdir %DESTDRIVESHARED%\%DESTDIRSHARED%.prev
 
-%DESTDRIVE%
-cd \%DESTDIR%
-echo JUMPSTART-0 >source.txt
-
 del /q %DESTDRIVE%\%DESTDIR%.prev\collabn1\*
 del /q %DESTDRIVE%\%DESTDIR%.prev\collabn2\*
 del /q %DESTDRIVESHARED%\%DESTDIRSHARED%.prev\*
 
 move /y %DESTDRIVE%\%DESTDIR%\collabn1\* %DESTDRIVE%\%DESTDIR%.prev\collabn1
 move /y %DESTDRIVE%\%DESTDIR%\collabn2\* %DESTDRIVE%\%DESTDIR%.prev\collabn2
+move /y %DESTDRIVE%\%DESTDIR%\source.txt %DESTDRIVE%\%DESTDIR%.prev
 move /y %DESTDRIVESHARED%\%DESTDIRSHARED%\*   %DESTDRIVESHARED%\%DESTDIRSHARED%.prev
+
+%DESTDRIVE%
+cd \%DESTDIR%
+echo JUMPSTART-0 >source.txt
+date /t >>source.txt
+time /t >>source.txt
+
+%DESTDRIVESHARED%
+cd \%DESTDIRSHARED%
+echo JUMPSTART-0 >source.txt
+date /t >>source.txt
+time /t >>source.txt
 
 rmdir %DESTDRIVE%\%DESTDIR%\collabn1
 rmdir %DESTDRIVE%\%DESTDIR%\collabn2
