@@ -45,6 +45,7 @@ echo s/DEFAULT-DESTDRIVE/%DESTDRIVE%/             >>%TEMP%\UserIn.sed
 echo s/DEFAULT-VMWAREDIR/%VMWAREDIR%/             >>%TEMP%\UserIn.sed
 echo s/DEFAULT-MYUSER/%MYUSER%/                   >>%TEMP%\UserIn.sed
 echo s/DEFAULT-MYPASS/%MYPASS%/                   >>%TEMP%\UserIn.sed
+echo s/DEFAULT-SOURCEDIR/%SOURCEDIR%/             >>%TEMP%\UserIn.sed
 
 sed "s/\\/\\\\/g" %TEMP%\UserIn.sed >%TEMP%\UserIn2.sed
 sed -f %TEMP%\UserIn2.sed input.hta >%TEMP%\UserIn.hta

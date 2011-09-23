@@ -3,7 +3,7 @@
     <title>RAC Attack - Jumpstart Configuration</title>
     <hta:application>
     <script language="vbscript">
-        window.resizeTo 700,300
+        window.resizeTo 700,350
         Sub SaveBatch()
             Set fs = CreateObject("Scripting.FileSystemObject")
             strFile = fs.GetAbsolutePathName(fs.BuildPath(fs.GetSpecialFolder(2), "UserIn.bat"))
@@ -19,6 +19,7 @@
     </script>
     </head>
     <body>
+    <h2>Jumpstarting from source: DEFAULT-SOURCEDIR</h2>
     <form>
         <table>
         <tr><td align="right">Jumpstart Source Drive</td>
