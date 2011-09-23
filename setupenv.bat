@@ -39,6 +39,9 @@ REM Begin prompting section
 
 if /i %PROMPTENV% neq YES goto endprompt
 
+cd|sed "s/\\.*//;s/^/set SOURCEDRIVE=/"   >%TEMP%\DetectVars.bat
+call %TEMP%\DetectVars.bat
+
 echo s/DEFAULT-SOURCEDRIVE/%SOURCEDRIVE%/          >%TEMP%\UserIn.sed
 echo s/DEFAULT-DESTDRIVESHARED/%DESTDRIVESHARED%/ >>%TEMP%\UserIn.sed
 echo s/DEFAULT-DESTDRIVE/%DESTDRIVE%/             >>%TEMP%\UserIn.sed
@@ -52,6 +55,7 @@ sed -f %TEMP%\UserIn2.sed input.hta >%TEMP%\UserIn.hta
 start /w %TEMP%\UserIn.hta
 call %TEMP%\UserIn.bat
 
+del %TEMP%\DetectVars.bat
 del %TEMP%\UserIn.sed
 del %TEMP%\UserIn2.sed
 del %TEMP%\UserIn.hta
