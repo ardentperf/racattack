@@ -11,7 +11,7 @@
             ts.WriteLine "SET SOURCEDRIVE=" & document.Forms(0).elements("sourcedrive").value
             ts.WriteLine "SET DESTDRIVE=" & document.Forms(0).elements("destdrive").value
             ts.WriteLine "SET DESTDRIVESHARED=" & document.Forms(0).elements("destdriveshared").value
-            ts.WriteLine 'SET VMWAREDIR="' & document.Forms(0).elements("vmwaredir").value & '"'
+            ts.WriteLine "SET VMWAREDIR=""" & document.Forms(0).elements("vmwaredir").value & """"
             ts.WriteLine "SET MYUSER=" & document.Forms(0).elements("username").value
             ts.WriteLine "SET MYPASS=" & document.Forms(0).elements("password").value
             ts.Close

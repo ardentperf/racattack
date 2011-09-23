@@ -88,13 +88,19 @@ echo.
 REM ===============================================================
 REM Vars that are dependant on other vars
 
-set VMRUNBIN="%VMWAREDIR:"=%\vmrun"
+set VMRUNBIN="%VMWAREDIR:"=%\vmrun.exe"
 set LZOPBIN=%SOURCEDRIVE%\lzop.exe
 set MD5BIN=%SOURCEDRIVE%\md5sum
 set SEDBIN=%SOURCEDRIVE%\sed
 
 if not exist %LZOPBIN% (
   echo ERROR: bad source drive!
+  pause
+  exit 1
+)
+
+if not exist %VMRUNBIN% (
+  echo ERROR: bad VMware installation directory!
   pause
   exit 1
 )
