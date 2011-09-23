@@ -48,6 +48,11 @@ move /y %DESTDRIVE%\%DESTDIR%\collabn2\* %DESTDRIVE%\%DESTDIR%.prev\collabn2
 move /y %DESTDRIVESHARED%\%DESTDIRSHARED%\*   %DESTDRIVESHARED%\%DESTDIRSHARED%.prev
 time /t
 
+REM ====================== Create Fixup Script =======================
+echo s/fileName.*RAC11g-iso/fileName = ^"%DESTDRIVESHARED%\\%DESTDIRISO%/         >%TEMP%\fixup.sed
+echo s/fileName.*RAC11g-shared/fileName = ^"%DESTDRIVESHARED%\\%DESTDIRSHARED%/  >>%TEMP%\fixup.sed
+type %TEMP%\fixup.sed
+
 REM ====================== Decompress New Files ======================
 %DESTDRIVE%
 
@@ -58,12 +63,20 @@ cd \%DESTDIR%\collabn1
 rem type %SOURCEDRIVE%\%SOURCEDIR%\collabn1.lzo | %LZOPBIN% -vdNp
 rem *** Windows TYPE command is fastest but can't handle >4GB files
 %LZOPBIN% -vdNp %SOURCEDRIVE%\%SOURCEDIR%\collabn1.lzo
+if exist collabn1.vmx (
+  move collabn1.vmx collabn1.vmx.orig
+  %SEDBIN% -f %TEMP%\fixup.sed collabn1.vmx.orig >collabn1.vmx
+)
 time /t
 
 cd \%DESTDIR%\collabn2
 rem type %SOURCEDRIVE%\%SOURCEDIR%\collabn2.lzo | %LZOPBIN% -vdNp
 rem *** Windows TYPE command is fastest but can't handle >4GB files
 %LZOPBIN% -vdNp %SOURCEDRIVE%\%SOURCEDIR%\collabn2.lzo
+if exist collabn1.vmx (
+  move collabn1.vmx collabn1.vmx.orig
+  %SEDBIN% -f %TEMP%\fixup.sed collabn1.vmx.orig >collabn1.vmx
+)
 time /t
 
 
@@ -100,3 +113,5 @@ cd \%DESTDIRSHARED%
 time /t
 
 pause
+
+del %TEMP%\fixup.sed

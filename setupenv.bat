@@ -27,6 +27,7 @@ set DESTDIR=RAC11g
 
 set DESTDRIVESHARED=C:
 set DESTDIRSHARED=RAC11g-shared
+set DESTDIRISO=RAC11g-iso
 
 set MYUSER=%USERNAME%
 set MYPASS=%YOUR_WINDOWS_PASSWORD%
@@ -90,6 +91,7 @@ REM Vars that are dependant on other vars
 set VMRUNBIN="%VMWAREDIR:"=%\vmrun"
 set LZOPBIN=%SOURCEDRIVE%\lzop.exe
 set MD5BIN=%SOURCEDRIVE%\md5sum
+set SEDBIN=%SOURCEDRIVE%\sed
 
 if not exist %LZOPBIN% (
   echo ERROR: bad source drive!
