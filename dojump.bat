@@ -98,6 +98,7 @@ time /t
 call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% register "[RAC11g] collabn1\collabn1.vmx"
 call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% register "[RAC11g] collabn2\collabn1.vmx"
 
+del %TEMP%\fixup.sed
 REM ====================== Check New Files ======================
 time /t
 %DESTDRIVE%
@@ -118,4 +119,3 @@ time /t
 
 pause
 
-del %TEMP%\fixup.sed
