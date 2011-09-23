@@ -57,7 +57,9 @@ REM ====================== Decompress New Files ======================
 %DESTDRIVE%
 
 cd \%DESTDIR%
-echo %SOURCEDRIVE%\%SOURCEDIR% >source.txt
+echo %SOURCEDRIVE%\%SOURCEDIR% >>source.txt
+date /t >>source.txt
+time /t >>source.txt
 
 cd \%DESTDIR%\collabn1
 rem type %SOURCEDRIVE%\%SOURCEDIR%\collabn1.lzo | %LZOPBIN% -vdNp
@@ -83,7 +85,9 @@ time /t
 %DESTDRIVESHARED%
 
 cd \%DESTDIRSHARED%
-echo %SOURCEDRIVE%\%SOURCEDIR% >source.txt
+echo %SOURCEDRIVE%\%SOURCEDIR% >>source.txt
+date /t >>source.txt
+time /t >>source.txt
 
 cd \%DESTDIRSHARED%
 rem type %SOURCEDRIVE%\%SOURCEDIR%\shared.lzo | %LZOPBIN% -vdNp
