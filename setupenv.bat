@@ -53,6 +53,15 @@ echo s/DEFAULT-SOURCEDIR/%SOURCEDIR%/             >>%TEMP%\UserIn.sed
 sed "s/\\/\\\\/g" %TEMP%\UserIn.sed >%TEMP%\UserIn2.sed
 sed -f %TEMP%\UserIn2.sed input.hta >%TEMP%\UserIn.hta
 start /w %TEMP%\UserIn.hta
+if not exist %TEMP%\UserIn.bat (
+  echo ERROR: user canceled input dialog!
+  pause
+  del %TEMP%\DetectVars.bat
+  del %TEMP%\UserIn.sed
+  del %TEMP%\UserIn2.sed
+  del %TEMP%\UserIn.hta
+  exit 1
+)
 call %TEMP%\UserIn.bat
 
 del %TEMP%\DetectVars.bat
