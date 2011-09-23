@@ -41,6 +41,7 @@ mkdir %DESTDRIVESHARED%\%DESTDIRSHARED%
 %DESTDRIVE%
 cd \%DESTDIR%\collabn1
 del /q vmware*.log
+del /q collabn1.vmx.orig
 %MD5BIN% * >checksum.md5
 
 type checksum.md5 | find /V "checksum" > c2.md5
@@ -49,6 +50,7 @@ time /t
 
 cd \%DESTDIR%\collabn2
 del /q vmware*.log
+del /q collabn1.vmx.orig
 %MD5BIN% * >checksum.md5
 
 type checksum.md5 | find /V "checksum" > c2.md5
