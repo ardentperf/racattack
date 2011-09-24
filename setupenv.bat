@@ -42,6 +42,7 @@ if /i %PROMPTENV% neq YES goto endprompt
 
 cd|sed "s/\\.*//;s/^/set SOURCEDRIVE=/"   >%TEMP%\DetectVars.bat
 call %TEMP%\DetectVars.bat
+if "%SOURCEDIR%"=="RAC-DEMO-INPLACE" set DESTDRIVE=%SOURCEDRIVE%
 
 echo s/DEFAULT-SOURCEDRIVE/%SOURCEDRIVE%/          >%TEMP%\UserIn.sed
 echo s/DEFAULT-DESTDRIVESHARED/%DESTDRIVESHARED%/ >>%TEMP%\UserIn.sed
@@ -92,6 +93,13 @@ set VMRUNBIN="%VMWAREDIR:"=%\vmrun.exe"
 set LZOPBIN=%SOURCEDRIVE%\lzop.exe
 set MD5BIN=%SOURCEDRIVE%\md5sum
 set SEDBIN=%SOURCEDRIVE%\sed
+set DESTDRIVEISO=%DESTDRIVESHARED%
+if "%SOURCEDIR%"=="RAC-DEMO-INPLACE" (
+  set DESTDIR=%DESTDIR%.DEMO
+  set DESTDIRSHARED=%DESTDIRSHARED%.DEMO
+  set DESTDIRISO=%DESTDIRISO%.DEMO
+  set DESTDRIVEISO=%SOURCEDRIVE%
+)
 
 if not exist %LZOPBIN% (
   echo ERROR: bad source drive!

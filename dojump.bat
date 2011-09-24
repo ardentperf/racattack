@@ -29,29 +29,33 @@ call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% 
 call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% unregister "[RAC11g] collabn2\collabn1.vmx"
 time /t
 
+if %SOURCEDRIVE%\%SOURCEDIR%==%DESTDRIVESHARED%\RAC-DEMO-INPLACE goto fixup
+
+mkdir %DESTDRIVESHARED%\%DESTDIRSHARED%
+mkdir %DESTDRIVESHARED%\%DESTDIRSHARED%.prev
+del /q %DESTDRIVESHARED%\%DESTDIRSHARED%.prev\*
+move /y %DESTDRIVESHARED%\%DESTDIRSHARED%\* %DESTDRIVESHARED%\%DESTDIRSHARED%.prev
+time /t
+
+if %SOURCEDIR%==RAC-DEMO-INPLACE goto fixup
+
 mkdir %DESTDRIVE%\%DESTDIR%
 mkdir %DESTDRIVE%\%DESTDIR%\collabn1
 mkdir %DESTDRIVE%\%DESTDIR%\collabn2
 mkdir %DESTDRIVE%\%DESTDIR%.prev
 mkdir %DESTDRIVE%\%DESTDIR%.prev\collabn1
 mkdir %DESTDRIVE%\%DESTDIR%.prev\collabn2
-
-mkdir %DESTDRIVESHARED%\%DESTDIRSHARED%
-mkdir %DESTDRIVESHARED%\%DESTDIRSHARED%.prev
-
 del /q %DESTDRIVE%\%DESTDIR%.prev\collabn1\*
 del /q %DESTDRIVE%\%DESTDIR%.prev\collabn2\*
 del /q %DESTDRIVE%\%DESTDIR%.prev\source.txt
-del /q %DESTDRIVESHARED%\%DESTDIRSHARED%.prev\*
-
 move /y %DESTDRIVE%\%DESTDIR%\collabn1\* %DESTDRIVE%\%DESTDIR%.prev\collabn1
 move /y %DESTDRIVE%\%DESTDIR%\collabn2\* %DESTDRIVE%\%DESTDIR%.prev\collabn2
 move /y %DESTDRIVE%\%DESTDIR%\source.txt %DESTDRIVE%\%DESTDIR%.prev
-move /y %DESTDRIVESHARED%\%DESTDIRSHARED%\*   %DESTDRIVESHARED%\%DESTDIRSHARED%.prev
 time /t
 
+:fixup
 REM ====================== Create Fixup Script =======================
-echo s/fileName.*RAC11g-iso/fileName = ^"%DESTDRIVESHARED%\\%DESTDIRISO%/         >%TEMP%\fixup.sed
+echo s/fileName.*RAC11g-iso/fileName = ^"%DESTDRIVEISO%\\%DESTDIRISO%/         >%TEMP%\fixup.sed
 echo s/fileName.*RAC11g-shared/fileName = ^"%DESTDRIVESHARED%\\%DESTDIRSHARED%/  >>%TEMP%\fixup.sed
 type %TEMP%\fixup.sed
 
@@ -66,7 +70,7 @@ time /t >>source.txt
 cd \%DESTDIR%\collabn1
 rem type %SOURCEDRIVE%\%SOURCEDIR%\collabn1.lzo | %LZOPBIN% -vdNp
 rem *** Windows TYPE command is fastest but can't handle >4GB files
-%LZOPBIN% -vdNp %SOURCEDRIVE%\%SOURCEDIR%\collabn1.lzo
+if not %SOURCEDIR%==RAC-DEMO-INPLACE %LZOPBIN% -vdNp %SOURCEDRIVE%\%SOURCEDIR%\collabn1.lzo
 if exist collabn1.vmx.orig (
   %SEDBIN% -f %TEMP%\fixup.sed collabn1.vmx.orig >collabn1.vmx
 )
@@ -75,7 +79,7 @@ time /t
 cd \%DESTDIR%\collabn2
 rem type %SOURCEDRIVE%\%SOURCEDIR%\collabn2.lzo | %LZOPBIN% -vdNp
 rem *** Windows TYPE command is fastest but can't handle >4GB files
-%LZOPBIN% -vdNp %SOURCEDRIVE%\%SOURCEDIR%\collabn2.lzo
+if not %SOURCEDIR%==RAC-DEMO-INPLACE %LZOPBIN% -vdNp %SOURCEDRIVE%\%SOURCEDIR%\collabn2.lzo
 if exist collabn1.vmx.orig (
   %SEDBIN% -f %TEMP%\fixup.sed collabn1.vmx.orig >collabn1.vmx
 )
@@ -92,15 +96,21 @@ time /t >>source.txt
 cd \%DESTDIRSHARED%
 rem type %SOURCEDRIVE%\%SOURCEDIR%\shared.lzo | %LZOPBIN% -vdNp
 rem *** Windows TYPE command is fastest but can't handle >4GB files
-%LZOPBIN% -vdNp %SOURCEDRIVE%\%SOURCEDIR%\shared.lzo
+if %SOURCEDIR%==RAC-DEMO-INPLACE (
+  if not %SOURCEDRIVE%==%DESTDRIVESHARED% copy /Y %SOURCEDRIVE%\%DESTDIRSHARED%\* .
+) else (
+  %LZOPBIN% -vdNp %SOURCEDRIVE%\%SOURCEDIR%\shared.lzo
+)
 time /t
 
 call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% register "[RAC11g] collabn1\collabn1.vmx"
 call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% register "[RAC11g] collabn2\collabn1.vmx"
 
 del %TEMP%\fixup.sed
-REM ====================== Check New Files ======================
 time /t
+if %SOURCEDIR%==RAC-DEMO-INPLACE goto end
+
+REM ====================== Check New Files ======================
 %DESTDRIVE%
 
 cd \%DESTDIR%\collabn1
@@ -117,5 +127,6 @@ cd \%DESTDIRSHARED%
 %MD5BIN% --check checksum.md5
 time /t
 
+:end
 pause
 
