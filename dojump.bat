@@ -41,10 +41,12 @@ mkdir %DESTDRIVESHARED%\%DESTDIRSHARED%.prev
 
 del /q %DESTDRIVE%\%DESTDIR%.prev\collabn1\*
 del /q %DESTDRIVE%\%DESTDIR%.prev\collabn2\*
+del /q %DESTDRIVE%\%DESTDIR%.prev\source.txt
 del /q %DESTDRIVESHARED%\%DESTDIRSHARED%.prev\*
 
 move /y %DESTDRIVE%\%DESTDIR%\collabn1\* %DESTDRIVE%\%DESTDIR%.prev\collabn1
 move /y %DESTDRIVE%\%DESTDIR%\collabn2\* %DESTDRIVE%\%DESTDIR%.prev\collabn2
+move /y %DESTDRIVE%\%DESTDIR%\source.txt %DESTDRIVE%\%DESTDIR%.prev
 move /y %DESTDRIVESHARED%\%DESTDIRSHARED%\*   %DESTDRIVESHARED%\%DESTDIRSHARED%.prev
 time /t
 
