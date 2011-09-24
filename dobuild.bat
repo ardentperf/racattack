@@ -67,6 +67,8 @@ del /q *.RESLCK
 
 type checksum.md5 | find /V "checksum" > c2.md5
 move /Y c2.md5 checksum.md5
+type checksum.md5 | find /V "source.txt" > c2.md5
+move /Y c2.md5 checksum.md5
 time /t
 
 
