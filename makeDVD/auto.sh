@@ -32,6 +32,11 @@ DOWNLOADS=(
     'https://updates.oracle.com/Orion/Services/download/p9655006_112010_LINUX.zip?aru=12651759&patch_file=p9655006_112010_LINUX.zip' '/patch/psu2-gi-9655006/'
 )
 
+# Note: To create an ISO file for classroom:
+# 1. Run this script to create the DVD contents
+# 2. CD into your staging directory with the DVD contents
+# 3. mkisofs -r -J -V "RAC Attack Downloads DVD" -o <target_dir_w_5GB_free>/RAC11gR2.iso .
+
 [ -n "$DEBUG" ] && set -x
 [ -z "$1" ] && { echo "Usage: auto.sh <dest-path>" && exit 1; }
 perl -MHTML::Parser -e 1 || { echo "ERROR: Perl Module HTML::Parser is not installed." && exit 1; }
