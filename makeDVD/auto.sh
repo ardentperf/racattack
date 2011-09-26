@@ -20,10 +20,16 @@
 #
 
 DOWNLOADS=(
-    'http://download.oracle.com/otn_software/asmlib/oracleasmlib-2.0.4-1.el5.i386.rpm'
-    'http://download.oracle.com/otn/linux/oracle11g/R2/linux_11gR2_database_1of2.zip'
-    'http://download.oracle.com/otn/linux/oracle11g/R2/linux_11gR2_database_2of2.zip'
-    'http://download.oracle.com/otn/linux/oracle11g/R2/linux_11gR2_grid.zip'
+    'http://download.oracle.com/otn_software/asmlib/oracleasmlib-2.0.4-1.el5.i386.rpm' '/oracleasmlib-2.0.4-1.el5.i386.rpm'
+    'http://download.oracle.com/otn/linux/oracle11g/R2/linux_11gR2_database_1of2.zip' '/'
+    'http://download.oracle.com/otn/linux/oracle11g/R2/linux_11gR2_database_2of2.zip' '/'
+    'http://download.oracle.com/otn/linux/oracle11g/R2/linux_11gR2_grid.zip' '/'
+    'https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=161818.1' '/support-note-161818.html'
+    'https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=880782.1' '/support-note-880782.html'
+    'https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=880707.1' '/support-note-880707.html'
+    'https://updates.oracle.com/Orion/Services/download/p6880880_112000_LINUX.zip?aru=13902524&patch_file=p6880880_112000_LINUX.zip' '/patch/opatch-6880880/p6880880_112000_LINUX.zip'
+    'https://updates.oracle.com/Orion/Services/download/p12419378_112010_LINUX.zip?aru=13710328&patch_file=p12419378_112010_LINUX.zip' '/patch/psu6-db-12419378/'
+    'https://updates.oracle.com/Orion/Services/download/p9655006_112010_LINUX.zip?aru=12651759&patch_file=p9655006_112010_LINUX.zip' '/patch/psu2-gi-9655006/'
 )
 
 [ -n "$DEBUG" ] && set -x
@@ -64,19 +70,40 @@ getFormFields /tmp/formfields >/tmp/formx
 curl -vd @/tmp/formx -d ssousername="$ORACLE_USERNAME" -d password="$ORACLE_PASSWORD" --location-trusted -b /tmp/cookies -c /tmp/cookies -A "Mozilla/5.0" https://login.oracle.com/oam/server/sso/auth_cred_submit >/tmp/form_login_debug 2>&1
 
 # download files from list
-cd $1
-for URL in "${DOWNLOADS[@]}"; do
-  FILE="$(basename $URL)"
+PARAM=0
+for DATA in "${DOWNLOADS[@]}"; do
+  if [ $PARAM -eq 0 ]; then
+    URL="$DATA"
+    PARAM=1
+    continue
+  fi
+  # default case, PARAM==1
+  # 1) calculate filenames and pathnames
+  DESTDIR=${DATA%/*}
+  FILE=${DATA##*/}
+  [ -z "$FILE" ] && FILE="${URL##*/}"
+  FILE="${FILE%\?*}"
+  # 2) download file if it's not already in /tmp
   echo "DOWNLOADING: /tmp/$FILE"
-  if [ ! -f /tmp/$FILE ]; then
+  DL=0
+  if [ ! -e /tmp/$FILE ]; then
     curl --location-trusted -b /tmp/cookies -c /tmp/cookies -A "Mozilla/5.0" -o /tmp/$FILE "$URL"
+    DL=1
   fi
-  if [ $(echo $FILE|awk -F. '{print$NF}') == zip ]; then
+  # 3) copy or unzip file into build destination
+  mkdir -p $1/$DESTDIR
+  cd $1/$DESTDIR
+  if [ $(echo $FILE|awk -F. '{print$NF}') == zip ] && [ $(echo $DATA|awk -F. '{print$NF}') != zip ]; then
     unzip /tmp/$FILE
-    rm -v /tmp/$FILE
+    (( $DL )) && rm -v /tmp/$FILE
   else
-    mv -v /tmp/$FILE .
+    if (( $DL )); then
+      mv -v /tmp/$FILE .
+    else
+      cp -v /tmp/$FILE .
+    fi
   fi
+  PARAM=0
 done
 
 if [ ! -n "$DEBUG" ]; then
