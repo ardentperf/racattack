@@ -28,6 +28,7 @@ DOWNLOADS=(
 
 [ -n "$DEBUG" ] && set -x
 [ -z "$1" ] && { echo "Usage: auto.sh <dest-path>" && exit 1; }
+perl -MHTML::Parser -e 1 || { echo "ERROR: Perl Module HTML::Parser is not installed." && exit 1; }
 
 function getFormFields {
 perl <<EOF
