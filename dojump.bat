@@ -60,13 +60,8 @@ echo s/fileName.*RAC11g-shared/fileName = ^"%DESTDRIVESHARED%\\%DESTDIRSHARED%/ 
 type %TEMP%\fixup.sed
 
 REM ====================== Decompress New Files ======================
+
 %DESTDRIVE%
-
-cd \%DESTDIR%
-echo %SOURCEDRIVE%\%SOURCEDIR% >>source.txt
-date /t >>source.txt
-time /t >>source.txt
-
 cd \%DESTDIR%\collabn1
 rem type %SOURCEDRIVE%\%SOURCEDIR%\collabn1.lzo | %LZOPBIN% -vdNp
 rem *** Windows TYPE command is fastest but can't handle >4GB files
@@ -85,15 +80,15 @@ if exist collabn1.vmx.orig (
 )
 time /t
 
-
-%DESTDRIVESHARED%
-
-cd \%DESTDIRSHARED%
+cd \%DESTDIR%
 echo %SOURCEDRIVE%\%SOURCEDIR% >>source.txt
 date /t >>source.txt
 time /t >>source.txt
 
+
+%DESTDRIVESHARED%
 cd \%DESTDIRSHARED%
+
 rem type %SOURCEDRIVE%\%SOURCEDIR%\shared.lzo | %LZOPBIN% -vdNp
 rem *** Windows TYPE command is fastest but can't handle >4GB files
 if %SOURCEDIR%==RAC-DEMO-INPLACE (
@@ -102,6 +97,11 @@ if %SOURCEDIR%==RAC-DEMO-INPLACE (
   %LZOPBIN% -vdNp %SOURCEDRIVE%\%SOURCEDIR%\shared.lzo
 )
 time /t
+
+del source.txt
+echo %SOURCEDRIVE%\%SOURCEDIR% >>source.txt
+date /t >>source.txt
+time /t >>source.txt
 
 call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% register "[RAC11g] collabn1\collabn1.vmx"
 call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% register "[RAC11g] collabn2\collabn1.vmx"
