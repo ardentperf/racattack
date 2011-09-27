@@ -28,6 +28,7 @@ DOWNLOADS=(
     'https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=880782.1' '/support-note-880782.html'
     'https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=880707.1' '/support-note-880707.html'
     'https://updates.oracle.com/Orion/Services/download/p6880880_112000_LINUX.zip?aru=13902524&patch_file=p6880880_112000_LINUX.zip' '/patch/opatch-6880880/p6880880_112000_LINUX.zip'
+    'https://updates.oracle.com/Orion/Services/download?type=readme&aru=13902524' '/patch/opatch-6880880/README.txt'
     'https://updates.oracle.com/Orion/Services/download/p12419378_112010_LINUX.zip?aru=13710328&patch_file=p12419378_112010_LINUX.zip' '/patch/psu6-db-12419378/'
     'https://updates.oracle.com/Orion/Services/download/p9655006_112010_LINUX.zip?aru=12651759&patch_file=p9655006_112010_LINUX.zip' '/patch/psu2-gi-9655006/'
 )
