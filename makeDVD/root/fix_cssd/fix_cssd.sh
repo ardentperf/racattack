@@ -1,4 +1,8 @@
 #!/bin/bash
+#
+# To install, add this line to rc.local:
+#   nohup nice -n -20 ./fix_cssd.sh 2>&1 &
+#
 while true
 do
   for CHECK in [o]cssd [c]ssdmonitor [c]ssdagent; do
