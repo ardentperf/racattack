@@ -3,7 +3,7 @@
     <title>RAC Attack - Jumpstart Configuration</title>
     <hta:application>
     <script language="vbscript">
-        window.resizeTo 700,350
+        window.resizeTo 700,400
         Sub SaveBatch()
             Set fs = CreateObject("Scripting.FileSystemObject")
             strFile = fs.GetAbsolutePathName(fs.BuildPath(fs.GetSpecialFolder(2), "UserIn.bat"))
@@ -11,6 +11,7 @@
             ts.WriteLine "SET SOURCEDRIVE=" & document.Forms(0).elements("sourcedrive").value
             ts.WriteLine "SET DESTDRIVE=" & document.Forms(0).elements("destdrive").value
             ts.WriteLine "SET DESTDRIVESHARED=" & document.Forms(0).elements("destdriveshared").value
+            ts.WriteLine "SET MEMSIZE=" & document.Forms(0).elements("memsize").value
             ts.WriteLine "SET VMWAREDIR=""" & document.Forms(0).elements("vmwaredir").value & """"
             ts.WriteLine "SET MYUSER=" & document.Forms(0).elements("username").value
             ts.WriteLine "SET MYPASS=" & document.Forms(0).elements("password").value
@@ -30,6 +31,9 @@
 
         <tr><td align="right">[RAC11g-shared] / [RAC11g-iso] Datastore Dest Drive</td>
         <td><input type=text name=destdriveshared size=5 value="DEFAULT-DESTDRIVESHARED"> <font color="red">15G Required</font></td></tr>
+
+        <tr><td align="right">VM Memory Size (MB)</td>
+        <td><input type=text name=memsize size=10 value="DEFAULT-MEMSIZE"></td></tr>
 
         <tr><td align="right">VMware Installation Directory</td>
         <td><input type=text name=vmwaredir size=45 value=DEFAULT-VMWAREDIR></td></tr>

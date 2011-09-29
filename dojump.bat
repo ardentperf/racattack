@@ -57,6 +57,7 @@ time /t
 REM ====================== Create Fixup Script =======================
 echo s/fileName.*RAC11g-iso/fileName = ^"%DESTDRIVEISO%\\%DESTDIRISO%/         >%TEMP%\fixup.sed
 echo s/fileName.*RAC11g-shared/fileName = ^"%DESTDRIVESHARED%\\%DESTDIRSHARED%/  >>%TEMP%\fixup.sed
+echo s/memsize =.*/memsize = ^"%MEMSIZE%^"/                                      >>%TEMP%\fixup.sed
 type %TEMP%\fixup.sed
 
 REM ====================== Decompress New Files ======================

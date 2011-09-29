@@ -29,6 +29,8 @@ set DESTDRIVESHARED=C:
 set DESTDIRSHARED=RAC11g-shared
 set DESTDIRISO=RAC11g-iso
 
+set MEMSIZE=900
+
 set MYUSER=%USERNAME%
 set MYPASS=%YOUR_WINDOWS_PASSWORD%
 
@@ -51,6 +53,7 @@ echo s/DEFAULT-VMWAREDIR/%VMWAREDIR%/             >>%TEMP%\UserIn.sed
 echo s/DEFAULT-MYUSER/%MYUSER%/                   >>%TEMP%\UserIn.sed
 echo s/DEFAULT-MYPASS/%MYPASS%/                   >>%TEMP%\UserIn.sed
 echo s/DEFAULT-SOURCEDIR/%SOURCEDIR%/             >>%TEMP%\UserIn.sed
+echo s/DEFAULT-MEMSIZE/%MEMSIZE%/                 >>%TEMP%\UserIn.sed
 
 sed "s/\\/\\\\/g" %TEMP%\UserIn.sed >%TEMP%\UserIn2.sed
 sed -f %TEMP%\UserIn2.sed input.hta >%TEMP%\UserIn.hta
