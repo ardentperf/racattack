@@ -25,10 +25,10 @@ echo "CAUTION: THIS WILL DELETE THE CURRENT IMAGES. ARE YOU SURE?  (CTRL-C to AB
 pause
 time /t
 
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% stop "[RAC11g] collabn1\collabn1.vmx" hard
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% unregister "[RAC11g] collabn1\collabn1.vmx"
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% stop "[RAC11g] collabn2\collabn1.vmx" hard
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% unregister "[RAC11g] collabn2\collabn1.vmx"
+call %VMRUNBIN% -T server -h https://127.0.0.1:8333/sdk -u %MYUSER% -p %MYPASS% stop "[RAC11g] collabn1\collabn1.vmx" hard
+call %VMRUNBIN% -T server -h https://127.0.0.1:8333/sdk -u %MYUSER% -p %MYPASS% unregister "[RAC11g] collabn1\collabn1.vmx"
+call %VMRUNBIN% -T server -h https://127.0.0.1:8333/sdk -u %MYUSER% -p %MYPASS% stop "[RAC11g] collabn2\collabn1.vmx" hard
+call %VMRUNBIN% -T server -h https://127.0.0.1:8333/sdk -u %MYUSER% -p %MYPASS% unregister "[RAC11g] collabn2\collabn1.vmx"
 time /t
 
 mkdir %DESTDRIVE%\%DESTDIR%
@@ -93,8 +93,8 @@ move /Y collabn1.vmx.orig collabn1.vmx
 cd \%DESTDIR%\collabn2
 move /Y collabn1.vmx.orig collabn1.vmx
 
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% register "[RAC11g] collabn1\collabn1.vmx"
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% register "[RAC11g] collabn2\collabn1.vmx"
+call %VMRUNBIN% -T server -h https://127.0.0.1:8333/sdk -u %MYUSER% -p %MYPASS% register "[RAC11g] collabn1\collabn1.vmx"
+call %VMRUNBIN% -T server -h https://127.0.0.1:8333/sdk -u %MYUSER% -p %MYPASS% register "[RAC11g] collabn2\collabn1.vmx"
 time /t
 
 pause

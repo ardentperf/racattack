@@ -23,10 +23,10 @@ call setupenv.bat
 REM ====================== Cleanup Current Files ======================
 time /t
 
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% stop "[RAC11g] collabn1\collabn1.vmx" hard
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% unregister "[RAC11g] collabn1\collabn1.vmx"
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% stop "[RAC11g] collabn2\collabn1.vmx" hard
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% unregister "[RAC11g] collabn2\collabn1.vmx"
+call %VMRUNBIN% -T server -h https://127.0.0.1:8333/sdk -u %MYUSER% -p %MYPASS% stop "[RAC11g] collabn1\collabn1.vmx" hard
+call %VMRUNBIN% -T server -h https://127.0.0.1:8333/sdk -u %MYUSER% -p %MYPASS% unregister "[RAC11g] collabn1\collabn1.vmx"
+call %VMRUNBIN% -T server -h https://127.0.0.1:8333/sdk -u %MYUSER% -p %MYPASS% stop "[RAC11g] collabn2\collabn1.vmx" hard
+call %VMRUNBIN% -T server -h https://127.0.0.1:8333/sdk -u %MYUSER% -p %MYPASS% unregister "[RAC11g] collabn2\collabn1.vmx"
 time /t
 
 if %SOURCEDRIVE%\%SOURCEDIR%==%DESTDRIVESHARED%\RAC-DEMO-INPLACE goto fixup
@@ -104,8 +104,8 @@ echo %SOURCEDRIVE%\%SOURCEDIR% >>source.txt
 date /t >>source.txt
 time /t >>source.txt
 
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% register "[RAC11g] collabn1\collabn1.vmx"
-call %VMRUNBIN% -T server -h https://localhost:8333/sdk -u %MYUSER% -p %MYPASS% register "[RAC11g] collabn2\collabn1.vmx"
+call %VMRUNBIN% -T server -h https://127.0.0.1:8333/sdk -u %MYUSER% -p %MYPASS% register "[RAC11g] collabn1\collabn1.vmx"
+call %VMRUNBIN% -T server -h https://127.0.0.1:8333/sdk -u %MYUSER% -p %MYPASS% register "[RAC11g] collabn2\collabn1.vmx"
 
 del %TEMP%\fixup.sed
 time /t
