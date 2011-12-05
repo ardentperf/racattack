@@ -35,6 +35,7 @@ set MYUSER=%USERNAME%
 set MYPASS=%YOUR_WINDOWS_PASSWORD%
 
 set VMWAREDIR="C:\Program Files\VMware\VMware Server"
+if exist "C:\Program Files (x86)\VMware\VMware Server\vmrun.exe" set VMWAREDIR="C:\Program Files (x86)\VMware\VMware Server"
 
 
 REM ===============================================================
