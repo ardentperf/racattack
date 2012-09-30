@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2010 Jeremy Schneider
+# Copyright 2012 Jeremy Schneider
 #
 # This file is part of RAC-ATTACK
 #
@@ -27,8 +27,8 @@ DOWNLOADS=(
     'https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=161818.1' '/support-note-161818.html'
     'https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=880782.1' '/support-note-880782.html'
     'https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=880707.1' '/support-note-880707.html'
-    'https://updates.oracle.com/Orion/Services/download/p6880880_112000_LINUX.zip?aru=13902524&patch_file=p6880880_112000_LINUX.zip' '/patch/opatch-6880880/p6880880_112000_LINUX.zip'
-    'https://updates.oracle.com/Orion/Services/download?type=readme&aru=13902524' '/patch/opatch-6880880/README.txt'
+    'https://updates.oracle.com/Orion/Services/download/p6880880_112000_LINUX.zip?aru=14688845&patch_file=p6880880_112000_LINUX.zip' '/patch/opatch-6880880/p6880880_112000_LINUX.zip'
+    'https://updates.oracle.com/Orion/Services/download?type=readme&aru=14688845' '/patch/opatch-6880880/README.txt'
     'https://updates.oracle.com/Orion/Services/download/p12419378_112010_LINUX.zip?aru=13710328&patch_file=p12419378_112010_LINUX.zip' '/patch/psu6-db-12419378/'
     'https://updates.oracle.com/Orion/Services/download/p9655006_112010_LINUX.zip?aru=12651759&patch_file=p9655006_112010_LINUX.zip' '/patch/psu2-gi-9655006/'
 )
@@ -47,6 +47,7 @@ perl <<EOF
 use HTML::Parser ();
 sub handle_start {
   return if shift ne "input"; my \$attr=shift;
+  return if \$attr->{name} eq "username";
   return if \$attr->{name} eq "ssousername";
   return if \$attr->{name} eq "password";
   print \$attr->{name}."=".\$attr->{value}."&";
@@ -68,12 +69,31 @@ read -p "Oracle SSO Username: " ORACLE_USERNAME
 stty -echo
 read -p "Oracle SSO Password: " ORACLE_PASSWORD; echo
 stty echo
+echo "http://www.oracle.com/technetwork/licenses/standard-license-152015.html"
+echo "Have you accepted the OTN Developer License Agreement?"
+read -p "Type YES: " ORACLE_LICENSE
+shopt -s nocasematch
+if ! [[ "$ORACLE_LICENSE" == "YES" ]]; then
+  echo ""
+  echo "ERROR: you must type 'yes' to accept the OTN Developer License Agreement"
+  exit 1
+fi
+shopt -u nocasematch
 
 # login to oracle website first
+echo "=================================================================="
 echo "LOGGING IN TO ORACLE SSO"
 curl --location-trusted -c /tmp/cookies -A "Mozilla/5.0" http://www.oracle.com/webapps/redirect/signon >/tmp/formfields
 getFormFields /tmp/formfields >/tmp/formx
-curl -vd @/tmp/formx -d ssousername="$ORACLE_USERNAME" -d password="$ORACLE_PASSWORD" --location-trusted -b /tmp/cookies -c /tmp/cookies -A "Mozilla/5.0" https://login.oracle.com/oam/server/sso/auth_cred_submit >/tmp/form_login_debug 2>&1
+curl -vd @/tmp/formx -d username="$ORACLE_USERNAME" -d password="$ORACLE_PASSWORD" --location-trusted -b /tmp/cookies -c /tmp/cookies -A "Mozilla/5.0" https://login.oracle.com/oam/server/sso/auth_cred_submit >/tmp/form_login_debug 2>&1
+if ! grep -q login_success /tmp/form_login_debug; then
+  echo ""
+  echo "ERROR: problem with OTN login"
+  exit 1
+fi
+
+# add cookie to indicate license acceptance
+echo ".oracle.com	TRUE	/	FALSE	0	gpw_e24	http%3A%2F%2Fwww.oracle.com%2Ftechnetwork%2Fdatabase%2Fenterprise-edition%2Fdownloads%2Findex.html" >> /tmp/cookies
 
 # download files from list
 PARAM=0
@@ -90,10 +110,11 @@ for DATA in "${DOWNLOADS[@]}"; do
   [ -z "$FILE" ] && FILE="${URL##*/}"
   FILE="${FILE%\?*}"
   # 2) download file if it's not already in /tmp
+  echo "=================================================================="
   echo "DOWNLOADING: /tmp/$FILE"
   DL=0
   if [ ! -e /tmp/$FILE ]; then
-    curl --location-trusted -b /tmp/cookies -c /tmp/cookies -A "Mozilla/5.0" -o /tmp/$FILE "$URL"
+    curl --location-trusted --no-sessionid -b /tmp/cookies -c /tmp/cookies -A "Mozilla/5.0" -o /tmp/$FILE "$URL"
     DL=1
   fi
   # 3) copy or unzip file into build destination
@@ -101,7 +122,7 @@ for DATA in "${DOWNLOADS[@]}"; do
   cd $1/$DESTDIR
   if [ $(echo $FILE|awk -F. '{print$NF}') == zip ] && [ $(echo $DATA|awk -F. '{print$NF}') != zip ]; then
     unzip /tmp/$FILE
-    (( $DL )) && rm -v /tmp/$FILE
+    (( $DL )) && [ ! -n "$DEBUG" ] && rm -v /tmp/$FILE
   else
     if (( $DL )); then
       mv -v /tmp/$FILE .
@@ -111,7 +132,8 @@ for DATA in "${DOWNLOADS[@]}"; do
   fi
   PARAM=0
 done
-
+ 
+echo "=================================================================="
 if [ ! -n "$DEBUG" ]; then
   rm -v /tmp/cookies
   rm -v /tmp/formx
