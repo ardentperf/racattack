@@ -41,6 +41,11 @@ DOWNLOADS=(
 [ -n "$DEBUG" ] && set -x
 [ -z "$1" ] && { echo "Usage: auto.sh <dest-path>" && exit 1; }
 perl -MHTML::Parser -e 1 || { echo "ERROR: Perl Module HTML::Parser is not installed." && exit 1; }
+if [[ "$({ curl -V|awk '{print$2;exit}'; echo "7.16"; } | sort -V | head -1)" == "7.16" ]]; then
+  CURLOPT="--no-sessionid"
+else
+  CURLOPT=""
+fi
 
 function getFormFields {
 perl <<EOF
@@ -114,7 +119,7 @@ for DATA in "${DOWNLOADS[@]}"; do
   echo "DOWNLOADING: /tmp/$FILE"
   DL=0
   if [ ! -e /tmp/$FILE ]; then
-    curl --location-trusted --no-sessionid -b /tmp/cookies -c /tmp/cookies -A "Mozilla/5.0" -o /tmp/$FILE "$URL"
+    curl --location-trusted $CURLOPT -b /tmp/cookies -c /tmp/cookies -A "Mozilla/5.0" -o /tmp/$FILE "$URL"
     DL=1
   fi
   # 3) copy or unzip file into build destination
