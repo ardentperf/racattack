@@ -1,52 +1,8 @@
 ubuntu@ip-10-194-37-107:~/wb2pdf/trunk$ svn diff
-Index: src/getimgs.py
-===================================================================
---- src/getimgs.py      (revision 1390)
-+++ src/getimgs.py      (working copy)
-@@ -31,6 +31,8 @@
- \\item LFK: Lizenz Freie Kunst. \\url{http://artlibre.org/licence/lal/de}
- \\item CFR: Copyright free use.
- \\item EPL: Eclipse Public License. \\url{http://www.eclipse.org/org/documents/epl-v10.php}
-+\\item MS: Copyright Microsoft Corporation.
-+\\item FAIR: Fair Use
- \\end{itemize}
- Copies of the GPL, the LGPL as well as a GFDL are included in chapter \\mylref{Licenses}{Licenses}. Please note that images in the public domain do not require attribution. You may click on the image numbers in the following table to open the webpage of the images in your webbrower.
- \\pagebreak
-Index: src/getpage.py
-===================================================================
---- src/getpage.py      (revision 1390)
-+++ src/getpage.py      (working copy)
-@@ -873,7 +873,12 @@
-   if t.find("{{EPL}}")>-1:
-     license="EPL"
-
-+  if t.find("{{Microsoft screenshot}}")>-1:
-+    license="MS"
-+  if t.find("{{non-free software screenshot}}")>-1:
-+    license="FAIR"
-
-+
-   if license==None:
-     license=""
-   if license!="PD":
-Index: src/all.py
-===================================================================
---- src/all.py  (revision 1390)
-+++ src/all.py  (working copy)
-@@ -81,7 +81,7 @@
-   f.write("\\newcommand{\SVGExtension}{png}")
-   ps="normal"
-   if len(sys.argv)>1:
--    run(sys.argv[1],ps,300)
-+    run(sys.argv[1],ps,300,"included")
-   else:
--    run(config.source,ps,300)
-+    run(config.source,ps,300,"included")
-
 Index: latex/templates.user
 ===================================================================
---- latex/templates.user        (revision 1390)
-+++ latex/templates.user        (working copy)
+--- latex/templates.user	(revision 1390)
++++ latex/templates.user	(working copy)
 @@ -1,4 +1,6 @@
  [
 +["RA/NAV","LaTeXNullTemplate"],
@@ -56,16 +12,16 @@ Index: latex/templates.user
  ["DISPLAYTITLE:UV Archiv Blender bis Version 2.45","LaTeXNullTemplate"],
 Index: latex/my-tail.tex
 ===================================================================
---- latex/my-tail.tex   (revision 1390) 
-+++ latex/my-tail.tex   (working copy)
-@@ -3,6 +3,31 @@
+--- latex/my-tail.tex	(revision 1390)
++++ latex/my-tail.tex	(working copy)
+@@ -3,6 +3,44 @@
  \chapter{Licenses}
  \label{Licenses}
  {\tiny
-+\section Fair Use
++\section {Fair Use}
 +Screenshots of proprietary software and websites are copyrighted. It is impossible to create public domain or free screenshots of proprietary software or websites. These screenshots are being used under "fair use" to illustrate how to use certain proprietary software.
 +
-+This is a screenshot of copyrighted computer software, and the copyright for its contents is most likely held by the author(s) or the company that created the software. It is believed that the use of a limited number of screenshots:
++These screenshots may contain copyrighted computer software, and the copyright for their contents is most likely held by the author(s) or the company that created the software. It is believed that the limited use of these screenshots:
 +
 +\begin{myitemize}
 +\item
@@ -76,9 +32,22 @@ Index: latex/my-tail.tex
 +in this free educational textbook created and maintained by the professional community
 +\end{myitemize}
 +
-+qualifies as fair use under United States copyright law. Any other uses of this image may be copyright infringement.
++qualifies as fair use under United States copyright law. Any other uses of these images may be copyright infringement. 
 +
-+\section Use of Microsoft Copyrighted Content
++\section {Copyrighted Web Pages}
++
++These images may contain screenshots of copyrighted web pages, and the copyright for them is most likely held by owner(s) of the website(s). They may also contain trademarked logos, which are likely not affiliated with RAC Attack. It is believed that the limited use of 
++
++\begin{myitemize}
++\item
++for identification and critical commentary relating to the website in question
++\item
++in this free educational textbook created and maintained by the professional community
++\end{myitemize}
++
++qualifies as fair use under United States copyright law. Any other uses of these images may be copyright infringement.
++
++\section {Use of Microsoft Copyrighted Content}
 +This screenshot of Microsoft software (or parts of it) is copyrighted by Microsoft Corporation.
 +
 +Microsoft permits the use of unmodified screenshots in documentation (including educational brochures), tutorial books, and on websites, as declared below:
@@ -87,6 +56,67 @@ Index: latex/my-tail.tex
 +
 +http://www.microsoft.com/en-us/legal/intellectualproperty/Permissions/default.aspx
 +
- \section {GNU GENERAL PUBLIC LICENSE}  
+ \section {GNU GENERAL PUBLIC LICENSE}
  \begin{multicols}{4}
+ 
+Index: src/getimgs.py
+===================================================================
+--- src/getimgs.py	(revision 1390)
++++ src/getimgs.py	(working copy)
+@@ -31,6 +31,9 @@
+ \\item LFK: Lizenz Freie Kunst. \\url{http://artlibre.org/licence/lal/de} 
+ \\item CFR: Copyright free use. 
+ \\item EPL: Eclipse Public License. \\url{http://www.eclipse.org/org/documents/epl-v10.php} 
++\\item MS: Copyright Microsoft Corporation.
++\\item FAIR: Fair Use
++\\item WEB: Copyrighted Web Page
+ \\end{itemize}
+ Copies of the GPL, the LGPL as well as a GFDL are included in chapter \\mylref{Licenses}{Licenses}. Please note that images in the public domain do not require attribution. You may click on the image numbers in the following table to open the webpage of the images in your webbrower.
+ \\pagebreak
+Index: src/getpage.py
+===================================================================
+--- src/getpage.py	(revision 1390)
++++ src/getpage.py	(working copy)
+@@ -358,7 +358,10 @@
+                     t=t.split("|title")[0]
+                     t=t.split("|technique")[0]
+                   except:
+-                    t=""
++                    try:
++                      t=xsplit(text,"{{information","author")
++                    except:
++                      t=""
+                   
+    
+ 
+@@ -873,7 +876,16 @@
+   if t.find("{{EPL}}")>-1:
+     license="EPL"
+ 
++  if t.find("{{Microsoft screenshot}}")>-1:
++    license="MS"
++  if t.find("{{non-free software screenshot}}")>-1:
++    license="FAIR"
++  if t.find("{{non-free web screenshot}}")>-1:
++    license="WEB"
++  if t.find("{{FirefoxWiki|")>-1:
++    license="GPL"
+ 
++
+   if license==None:
+     license=""
+   if license!="PD":
+Index: src/all.py
+===================================================================
+--- src/all.py	(revision 1390)
++++ src/all.py	(working copy)
+@@ -81,7 +81,7 @@
+   f.write("\\newcommand{\SVGExtension}{png}") 
+   ps="normal"
+   if len(sys.argv)>1:
+-    run(sys.argv[1],ps,300)
++    run(sys.argv[1],ps,300,"included")
+   else:  
+-    run(config.source,ps,300)
++    run(config.source,ps,300,"included")
 
