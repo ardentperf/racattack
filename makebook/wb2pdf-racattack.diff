@@ -63,12 +63,8 @@ Index: src/all.py
 ===================================================================
 --- src/all.py	(revision 1390)
 +++ src/all.py	(working copy)
-@@ -78,10 +78,10 @@
- 
- if __name__ == '__main__':
-   f=open(files.headerpath+"svg.tex","w")
--  f.write("\\newcommand{\SVGExtension}{png}") 
-+  f.write("\\newcommand{\SVGExtension}{pdf}") 
+@@ -81,7 +81,7 @@
+   f.write("\\newcommand{\SVGExtension}{png}") 
    ps="normal"
    if len(sys.argv)>1:
 -    run(sys.argv[1],ps,300)
@@ -76,7 +72,6 @@ Index: src/all.py
    else:  
 -    run(config.source,ps,300)
 +    run(config.source,ps,300,"excluded")
- 
 Index: latex/templates.user
 ===================================================================
 --- latex/templates.user	(revision 1390)
