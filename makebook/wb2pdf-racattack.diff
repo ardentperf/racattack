@@ -76,10 +76,11 @@ Index: latex/templates.user
 ===================================================================
 --- latex/templates.user	(revision 1390)
 +++ latex/templates.user	(working copy)
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,7 @@
  [
 +["RA/NAV","LaTeXNullTemplate"],
-+["RA/A","MyBlau","1"],
++["RA/A","LaTeXTTUlineTemplate","1"],
++["RA/TOC","LaTeXNullTemplate"],
  ["mywikitemplate1","MyLaTeXTemplate","paramx","3","paramy"],
  ["NPOV","LaTeXNullTemplate"],
  ["DISPLAYTITLE:UV Archiv Blender bis Version 2.45","LaTeXNullTemplate"],
