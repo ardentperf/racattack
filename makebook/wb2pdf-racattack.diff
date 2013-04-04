@@ -166,7 +166,7 @@ Index: latex/my-head.tex
 ===================================================================
 --- latex/my-head.tex	(revision 1390)
 +++ latex/my-head.tex	(working copy)
-@@ -28,6 +28,8 @@
+@@ -28,15 +28,19 @@
  \pagestyle{empty}
  %\include{coverfrontpage}
  
@@ -175,6 +175,17 @@ Index: latex/my-head.tex
  %\cleardoublepage
  \pagenumbering{Roman}
  \maketitle
++\KOMAoption{open}{left}
+ \pagestyle{scrheadings}
+ 
+ \setcounter{tocdepth}{\mytocdepth}
+ \tableofcontents 
+ 
+ %\cleardoublepage
++\KOMAoption{open}{right}
+ \pagenumbering{arabic}
+ 
+ %\include{kap-vorwort}
 Index: document/headers/paper.tex
 ===================================================================
 --- document/headers/paper.tex	(revision 0)
