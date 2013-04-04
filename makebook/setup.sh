@@ -28,4 +28,5 @@ cd ../../
 wget https://raw.github.com/ardentperf/racattack/master/makebook/wb2pdf-racattack.diff
 patch -b -p0 -i wb2pdf-racattack.diff
 
+wget https://raw.github.com/ardentperf/racattack/master/makebook/make-racattack-book.sh
 
