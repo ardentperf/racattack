@@ -5,24 +5,24 @@ python3.2 all.py http://en.wikibooks.org/wiki/RAC_Attack_-_Oracle_Cluster_Databa
 
 cd ../document/main
 cp main.tex main.tex.orig; awk '
- /Exclude_in_print/{next} 
- /UNKNOWN TEMPLATE/{ut=$0;next} 
- /Sidebox/,/\\end{myenumerate}/{ut="";gotsidebox=1;next} 
- gotsidebox{gotsidebox=0;next}
- ut{print(ut);ut=""};
  {
+   # first, lots of tweaks to image typesetting
+   # - center images with \centerline
+   # - insert 0.1cm space above and change space below to 0.5cm
+   # - keep image with previous paragraph unless it was immediately preceded by another image
+   # - shrink full width images to 70% of their width (so that two screenshots can fit on one page)
    if(/^\\begin{minipage}/&&!rightafterimage){
      sub(/^/,"\\nopagebreak\\centerline{");
      sub(/$/,"\\vspace{0.1cm}");
    };
-   sub(/^Next on .* track: .*/,"");  # remove these links from end of "Create Cluster" chapter
-   sub(/^Previous on .* track: .*/,"");  # remove these links from end of "RAC Install" chapter
    sub(/^\\begin{minipage}/,"\\centerline{\\begin{minipage}");
    sub(/^\\end{minipage}/,"\\end{minipage}}");
    sub(/\\vspace{0.75cm}/,"\\vspace{0.5cm}");
-   gsub(/\\item{}\\item{}/,"\\item{}");  # wiki sometimes has <li></li><li> for web formatting
-   gsub(/\\myplainurl{http[s]?:\/\/}/,"");
    gsub(/\\begin{minipage}{1.0\\linewidth}/,"\\begin{minipage}{0.7\\linewidth}");
+   # wikibook pages sometimes have <li></li><li> for web formatting
+   gsub(/\\item{}\\item{}/,"\\item{}");
+   # wb2pdf scatters spurious "http[s]://" whenever theres a link in an infobox
+   gsub(/\\myplainurl{http[s]?:\/\/}/,"");
    print
  }
  /./{rightafterimage=0}
