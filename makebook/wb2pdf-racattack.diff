@@ -172,7 +172,7 @@ Index: latex/my-head.tex
  \pagestyle{empty}
  %\include{coverfrontpage}
  
-+\author{Edited by Jeremy Schneider\thanks{Sponsored by Pythian}}
++\author{A Project of the Oracle Professional Community\thanks{Visit racattack.org/12c and racattack.org/list}}
 +
  %\cleardoublepage
  \pagenumbering{Roman}

@@ -1,7 +1,7 @@
 cd wb2pdf/trunk
 
 cd src
-python3.2 all.py http://en.wikibooks.org/wiki/RAC_Attack_-_Oracle_Cluster_Database_at_Home/Print_Book
+python3.2 all.py http://en.wikibooks.org/wiki/RAC_Attack_-_Oracle_Cluster_Database_at_Home/RAC_Attack_12c/Print_Book
 
 cd ../document/main
 cp main.tex main.tex.orig; awk '
