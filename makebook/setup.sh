@@ -6,13 +6,13 @@ sudo apt-get -y install subversion ghc libghc6-regex-compat-dev libghc6-http-dev
 sudo apt-get -y install poppler-utils python3-pyqt4 p7zip-full dos2unix pdftk texmaker
 
 cabal update
-cd
-svn co https://wb2pdf.svn.sourceforge.net/svnroot/wb2pdf@1390 wb2pdf
+cd /home/ubuntu
+svn co svn://svn.code.sf.net/p/wb2pdf/code/trunk@1390 wb2pdf
 
-cd wb2pdf/trunk; cabal install --root-cmd=sudo --force-reinstalls
-cd src; python3.2 makelinuxbins.py
+cd /home/ubuntu/wb2pdf/trunk; cabal install --root-cmd=sudo --force-reinstalls
+cd /home/ubuntu/wb2pdf/trunk/src; python3.2 makelinuxbins.py
 sudo mkdir -p /usr/share/texmf-texlive/fonts/truetype/
-cd ../font/; sudo python3.2 installunifont.py
+cd /home/ubuntu/wb2pdf/trunk/font/; sudo python3.2 installunifont.py
 
 sudo cp /usr/share/texmf/web2c/texmf.cnf /usr/share/texmf/web2c/texmf.cnf.orig
 sudo sh -c "sed 's|\(^TTFONTS.*\)|\1;/usr/share/texmf-texlive/fonts/truetype//|' /usr/share/texmf/web2c/texmf.cnf.orig  >/usr/share/texmf/web2c/texmf.cnf"
@@ -21,14 +21,14 @@ sudo mkdir -p /usr/share/texmf-texlive/fonts/map/ttf2pk/config/
 sudo sh -c "echo megafont@Unicode@  megafont.ttf Pid = 3 Eid = 1 >> /usr/share/texmf-texlive/fonts/map/ttf2pk/config/ttfonts.map"
 sudo texhash
 
-cd ../document/main/
+cd /home/ubuntu/wb2pdf/trunk/document/main/
 wget http://upload.wikimedia.org/wikipedia/commons/5/52/Racattack-book-title.png
 
-cd ../../
+cd /home/ubuntu/wb2pdf/trunk
 wget https://raw.github.com/ardentperf/racattack/master/makebook/wb2pdf-racattack.diff
 dos2unix src/all.py
 patch -b -p0 -i wb2pdf-racattack.diff
 
-cd ../..
+cd /home/ubuntu
 wget https://raw.github.com/ardentperf/racattack/master/makebook/make-racattack-book.sh
 
