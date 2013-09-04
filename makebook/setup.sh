@@ -7,7 +7,7 @@ sudo apt-get -y install poppler-utils python3-pyqt4 p7zip-full dos2unix pdftk te
 
 cabal update
 cd /home/ubuntu
-svn co svn://svn.code.sf.net/p/wb2pdf/code/trunk@1390 wb2pdf
+svn co svn://svn.code.sf.net/p/wb2pdf/code@1390 wb2pdf
 
 cd /home/ubuntu/wb2pdf/trunk; cabal install --root-cmd=sudo --force-reinstalls
 cd /home/ubuntu/wb2pdf/trunk/src; python3.2 makelinuxbins.py
