@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # switch package source to ubuntu archive server
 sudo sed -i -e 's/us-.*.archive.ubuntu.com\|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
